@@ -1,0 +1,45 @@
+/* pages/scan/index.wxss */
+page {
+  background-color: #fff;
+}
+
+.camera {
+  margin: 0 auto;
+  width: 100%;
+  height: 450rpx;
+}
+
+.collect_btn {
+  padding: 20rpx;
+  text-align: right;
+}
+
+.books {
+  padding: 40rpx;
+}
+
+.books_item {
+  display: flex;
+}
+
+.books_photo {
+  width: 150rpx;
+  height: 225rpx;
+  border-radius: 6rpx;
+}
+
+.books_content {
+  flex: 1;
+  margin-left: 20rpx;
+}
+
+.books_content_name {
+  font-size: 34rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.books_content_name_other {
+  font-size: 30rpx;
+  color: #333;
+}

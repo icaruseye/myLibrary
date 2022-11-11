@@ -1,0 +1,16 @@
+<wxs module="util" src="../util.wxs" />
+
+<view class="container empty" wx:if="{{books.length === 0}}">
+  <image class="background" src="../../images/list/background.png" mode="aspectFit" />
+  <view class="title">暂无藏书</view>
+  <view class="subtitle">空空如也？扫码录入吧！</view>
+  <footer></footer>
+</view>
+<view class="books_list_wrpa" wx:if="{{books.length > 0}}">
+  <view class="books_list">
+    <view class="books_list_item" wx:for="{{books}}" wx:key="index">
+      <image class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" />
+    </view>
+  </view>
+  <footer></footer>
+</view>

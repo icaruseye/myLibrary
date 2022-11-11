@@ -1,0 +1,30 @@
+<view class="container">
+  <camera class="camera" mode="scanCode" binderror="error" bindscancode='takeCode'></camera>
+  <view class="collect_btn">
+    <van-button type="info" size="small" bindtap="collection">一键收藏({{books.length}})</van-button>
+  </view>
+  <scroll-view scroll-y="true" style="height: calc(100vh - 500rpx);">
+    <view class="books" wx:for="{{books}}" wx:key="index">
+      <view class="books_item">
+        <image class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" />
+        <view class="books_content">
+          <view class="books_content_name">
+            {{item.name}}
+          </view>
+          <view class="books_content_name_other">
+            作者：{{item.author}}
+          </view>
+          <view wx:if="{{item.translator}}" class="books_content_name_other">
+            译者：{{item.translator}}
+          </view>
+          <view class="books_content_name_other">
+            出版社：{{item.publishing}}
+          </view>
+          <view class="books_content_name_other">
+            ISBN：{{item.code}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
