@@ -4,9 +4,8 @@ App({
 
     this.globalData = {
       // 用于存储待办记录的集合名称
-      collection: 'todo',
-      // 最大文件上传数量
-      fileLimit: 2
+      collection: 'books',
+      openid: ''
     }
   },
 
@@ -57,21 +56,6 @@ App({
     return (await this.cloud()).database()
   },
 
-  // 上传文件操作封装
-  async uploadFile(cloudPath, filePath) {
-    return (await this.cloud()).uploadFile({
-      cloudPath,
-      filePath
-    })
-  },
-
-  // 下载文件操作封装
-  async downloadFile(fileID) {
-    return (await this.cloud()).downloadFile({
-      fileID
-    })
-  },
-
   // 获取用户唯一标识，兼容不同环境模式
   async getOpenId() {
     const {
@@ -91,6 +75,7 @@ App({
       })
       throw new Error(flag)
     })
+    this.globalData.openid = openid
     if (openid !== "") return openid
     return fromopenid
   }

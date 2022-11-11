@@ -1,6 +1,6 @@
 /* miniprogram/pages/list/index.wxss */
 page {
-  background-color: #fff;
+  background-color: #f1f1f1;
 }
 
 .background {
@@ -25,7 +25,7 @@ page {
 }
 
 .books_list_wrpa {
-  padding: 60rpx 40rpx;
+  padding: 60rpx 40rpx 160rpx;
 }
 
 .books_list {
@@ -35,7 +35,7 @@ page {
 
 .books_list_item {
   width: calc((100% - 80rpx) / 3);
-  margin-bottom: 60rpx;
+  margin-bottom: 55rpx;
   display: flex;
   justify-content: center;
   margin-right: 40rpx;
@@ -46,7 +46,46 @@ page {
 }
 
 .books_photo {
-  width: 150rpx;
-  height: 225rpx;
+  width: 170rpx;
+  height: 255rpx;
+  border-radius: 6rpx;
+  box-shadow: 2px 4px 8px #ccc;
+}
+
+.dialog_wrap {
+  padding: 50rpx;
+  background-color: #f1f1f1;
+}
+
+.book_detail {
+  font-size: 30rpx;
+}
+
+.book_detail .title {
+  margin-bottom: 40rpx;
+  font-size: 34rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.book_detail .content {
+  line-height: 1.8;
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 50rpx;
+}
+
+.book_detail .content .text {
+  color: #333;
+}
+
+
+.book_detail .content .photo {
+  margin: 0 auto;
+  width: 220rpx;
+  height: 330rpx;
+  display: block;
+  margin-bottom: 30rpx;
+  box-shadow: 2px 4px 8px #ababab;
   border-radius: 6rpx;
 }

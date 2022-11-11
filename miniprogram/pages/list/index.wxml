@@ -1,16 +1,42 @@
 <wxs module="util" src="../util.wxs" />
 
-<view class="container empty" wx:if="{{books.length === 0}}">
+<view class="container empty" wx:if="{{empty}}">
   <image class="background" src="../../images/list/background.png" mode="aspectFit" />
   <view class="title">暂无藏书</view>
   <view class="subtitle">空空如也？扫码录入吧！</view>
   <footer></footer>
 </view>
-<view class="books_list_wrpa" wx:if="{{books.length > 0}}">
+<view class="books_list_wrpa" wx:else>
   <view class="books_list">
     <view class="books_list_item" wx:for="{{books}}" wx:key="index">
-      <image class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" />
+      <image lazy-load class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" bindtap="showDetail" data-item="{{item}}" />
     </view>
   </view>
   <footer></footer>
 </view>
+
+<van-dialog use-slot show="{{ dialogVisible }}" bind:close="onClose" showConfirmButton="{{false}}">
+  <view class="dialog_wrap">
+    <view class="book_detail">
+      <!-- <view class="title">书籍详情</view> -->
+      <view class="content">
+        <image class="photo" mode="scaleToFill" src="{{bookDetail.photoUrl}}" />
+        <view>书名：<text class="text">{{bookDetail.name}}</text>
+        </view>
+        <view>作者：<text class="text">{{bookDetail.author}}</text>
+        </view>
+        <view wx:if="{{bookDetail.translator}}">译者：<text class="text">{{bookDetail.translator}}</text>
+        </view>
+        <view>出版社：<text class="text">{{bookDetail.publishing}}</text>
+        </view>
+        <view>出版时间：<text class="text">{{bookDetail.published}}</text>
+        </view>
+        <view>ISBN：<text class="text">{{bookDetail.id}}</text>
+        </view>
+        <view>收藏时间：<text class="text">{{bookDetail.collectionTime || '-'}}</text>
+        </view>
+      </view>
+    </view>
+    <van-button type="primary" block bindtap="onClose">确定</van-button>
+  </view>
+</van-dialog>

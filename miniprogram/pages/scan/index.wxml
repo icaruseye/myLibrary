@@ -1,7 +1,7 @@
 <view class="container">
-  <camera class="camera" mode="scanCode" binderror="error" bindscancode='takeCode'></camera>
+  <camera class="camera" mode="scanCode" binderror="error" bindscancode='takeCode' flash="off"></camera>
   <view class="collect_btn">
-    <van-button type="info" size="small" bindtap="collection">一键收藏({{books.length}})</van-button>
+    <van-button type="info" size="small" bindtap="addBooks">一键收藏（{{books.length}}）</van-button>
   </view>
   <scroll-view scroll-y="true" style="height: calc(100vh - 500rpx);">
     <view class="books" wx:for="{{books}}" wx:key="index">
@@ -21,7 +21,7 @@
             出版社：{{item.publishing}}
           </view>
           <view class="books_content_name_other">
-            ISBN：{{item.code}}
+            ISBN：{{item.id}}
           </view>
         </view>
       </view>

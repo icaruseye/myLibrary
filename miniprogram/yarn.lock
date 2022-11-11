@@ -6,8 +6,3 @@
   version "1.10.6"
   resolved "https://registry.yarnpkg.com/@vant/weapp/-/weapp-1.10.6.tgz#5691c94439160601dc20b95233d16fe93322284c"
   integrity sha512-1IHuolm/dY91YVismO/8xrLbj0s59O4Hcfo6BNXhD5qpTBH/IcjLXnSJ6KpxzcKe6/lXJ/Z1Kyzy6hqFvmB1Bw==
-
-weui-miniprogram@^1.0.8:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/weui-miniprogram/-/weui-miniprogram-1.2.4.tgz#1a488eaacbd32725cfd8d1572f6bf11e4b46509c"
-  integrity sha512-AB/gGPgTJJ0vHxQQNfAwxK4JPjwV+BNGgKSxD7qyI2tLgAfZFqFyx7fPJkfOBYTYJdg38ZPA78YHIgYTyWuGEA==

@@ -2,5 +2,8 @@
   "usingComponents": {
     "footer": "../../components/footer"
   },
-  "backgroundColor": "#fff"
+  "backgroundColor": "#fff",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "onReachBottomDistance": 300
 }

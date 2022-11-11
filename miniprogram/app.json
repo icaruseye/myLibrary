@@ -1,10 +1,6 @@
 {
   "pages": [
     "pages/list/index",
-    "pages/add/index",
-    "pages/file/index",
-    "pages/edit/index",
-    "pages/detail/index",
     "pages/scan/index"
   ],
   "window": {
@@ -17,7 +13,8 @@
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
-    "van-button": "@vant/weapp/button/index"
+    "van-button": "@vant/weapp/button/index",
+    "van-dialog": "@vant/weapp/dialog/index"
   }
 
 }

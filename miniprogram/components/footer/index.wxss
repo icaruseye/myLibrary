@@ -6,7 +6,6 @@
   position: fixed;
   bottom: 0;
   display: flex;
-  border-top: #E0E0E0 solid 1px;
   background: white;
   z-index: 10;
 }

@@ -1,4 +1,7 @@
 // pages/scan/index.js
+import {
+  formatDate
+} from '../../util.js'
 const apiKey = '14073.8b6928465dbf02b61e4c862b321357c4.b26772be2b60b24935bcfeb477449bf7'
 Page({
 
@@ -15,9 +18,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
-
-  },
+  onLoad(options) {},
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -29,10 +30,8 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {
-
-  },
-  takeCode(e) {
+  async onShow() {},
+  async takeCode(e) {
     if (this.data.scanFunctionIsUseAble) {
       const code = e.detail.result
       if (!this.data.codeList.includes(code)) {
@@ -44,39 +43,45 @@ Page({
         this.setData({
           scanFunctionIsUseAble: false,
         })
-        this.getBookInfo(e.detail.result).then(res => {
-          this.setData({
-            codeList: this.data.codeList.concat(code),
-            books: [{
-              id: res.data.id,
-              name: res.data.name,
-              author: res.data.author,
-              photoUrl: res.data.photoUrl,
-              publishing: res.data.publishing,
-              published: res.data.published,
-              translator: res.data.translator,
-              designed: res.data.designed,
-              translator: res.data.translator,
-              pages: res.data.pages,
-              price: res.data.price,
-            }, ...this.data.books]
-          })
-        }).catch(e => {
-          wx.showToast({
-            title: '书籍查询失败',
-            duration: 1000,
-            icon: 'error'
-          })
-        }).finally(_ => {
+        try {
+          const db = await getApp().database()
+          const openid = getApp().globalData.openid
+          const isExist = await db.collection(getApp().globalData.collection).where({
+            _openid: openid,
+            id: Number(code)
+          }).get().then(res => res.data)
+          if (isExist.length) {
+            wx.showToast({
+              title: '已收藏此书',
+              duration: 1000,
+              icon: 'none'
+            })
+          } else {
+            const bookInfo = await this.getBookInfo(e.detail.result).then(res => res.data)
+            bookInfo.collectionTime = formatDate(new Date(), 'yyyy-MM-dd')
+            this.setData({
+              codeList: this.data.codeList.concat(code),
+              books: [bookInfo, ...this.data.books]
+            })
+          }
           setTimeout(_ => {
             this.setData({
               scanFunctionIsUseAble: true,
             })
-          }, 1000 * 2)
-        })
+          }, 1000 * 1)
+        } catch (error) {
+          wx.showToast({
+            title: '查询失败',
+            duration: 1000,
+            icon: 'error'
+          })
+          this.setData({
+            scanFunctionIsUseAble: true,
+          })
+        }
       } else {
         wx.showToast({
-          title: '已存在！',
+          title: '已扫描此书',
           duration: 1000,
           icon: 'none'
         })
@@ -105,30 +110,42 @@ Page({
       })
     })
   },
-  collection() {
-    if (this.data.books.length > 0) {
-      const old = wx.getStorageSync('books') || []
-      const oldCodes = old.map(item => item.id)
-      this.data.books.forEach(item => {
-        if (!oldCodes.includes(item.id)) {
-          old.push(item)
+
+  async addBooks() {
+    if (this.data.books.length === 0) return false
+    wx.showLoading({
+      title: '录入中',
+    })
+    wx.cloud.callFunction({
+      // 需调用的云函数名
+      name: 'addBook',
+      // 传给云函数的参数
+      data: {
+        list: this.data.books.map(i => {
+          return {
+            ...i,
+            _openid: getApp().globalData.openid
+          }
+        }).reverse()
+      },
+      // 成功回调
+    }).then((res) => {
+      console.log(res);
+      wx.showToast({
+        title: '添加成功',
+        complete() {
+          wx.navigateBack()
         }
       })
-      wx.setStorageSync('books', old)
-      this.setData({
-        books: [],
-        codeList: []
-      })
+    }).catch((e) => {
+      console.log(e);
       wx.showToast({
-        title: '操作成功',
-        icon: 'success'
+        title: '添加失败!',
+        icon: 'error'
       })
-    } else {
-      wx.showToast({
-        title: '还未添加书籍',
-        icon: 'none'
-      })
-    }
+    }).finally(_ => {
+      wx.hideLoading()
+    })
   },
   /**
    * 生命周期函数--监听页面隐藏
