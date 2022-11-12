@@ -1,0 +1,1 @@
+<text wx:for="{{searchArray}}" wx:key="index" class="{{item == keyName ? 'highlight' : 'normal' }}">{{item}}</text>

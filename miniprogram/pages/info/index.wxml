@@ -1,0 +1,36 @@
+<view class="container">
+  <image class="photo" mode="scaleToFill" src="{{bookDetail.photoUrl}}" />
+  <view class="book_detail">
+    <view>
+      <view class="label">书名：</view>
+      <view class="text">{{bookDetail.name}}</view>
+    </view>
+    <view>
+      <view class="label">作者：</view>
+      <view class="text">{{bookDetail.author}}</view>
+    </view>
+    <view wx:if="{{bookDetail.translator}}">
+      <view class="label">译者：</view>
+      <view class="text">{{bookDetail.translator}}</view>
+    </view>
+    <view>
+      <view class="label">出版社：</view>
+      <view class="text">{{bookDetail.publishing}}</view>
+    </view>
+    <view>
+      <view class="label">出版时间：</view>
+      <view class="text">{{bookDetail.published}}</view>
+    </view>
+    <view>
+      <view class="label">ISBN：</view>
+      <view class="text">{{bookDetail.id}}</view>
+    </view>
+    <view>
+      <view class="label">收藏时间：</view>
+      <view class="text">{{bookDetail.collectionTime || '-'}}</view>
+    </view>
+  </view>
+  <view class="bottom_btn">
+    <van-button type="info" size="large" bindtap="removeBook" block>移出书架</van-button>
+  </view>
+</view>

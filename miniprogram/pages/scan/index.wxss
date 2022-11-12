@@ -1,6 +1,6 @@
 /* pages/scan/index.wxss */
 page {
-  background-color: #fff;
+  background-color: #f1f1f1;
 }
 
 .camera {
@@ -10,12 +10,12 @@ page {
 }
 
 .collect_btn {
-  padding: 20rpx;
+  padding: 20rpx 40rpx;
   text-align: right;
 }
 
 .books {
-  padding: 40rpx;
+  padding: 20rpx 40rpx;
 }
 
 .books_item {
@@ -23,8 +23,8 @@ page {
 }
 
 .books_photo {
-  width: 150rpx;
-  height: 225rpx;
+  width: 130rpx;
+  height: 195rpx;
   border-radius: 6rpx;
 }
 

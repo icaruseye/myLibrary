@@ -2,41 +2,20 @@
 
 <view class="container empty" wx:if="{{empty}}">
   <image class="background" src="../../images/list/background.png" mode="aspectFit" />
-  <view class="title">暂无藏书</view>
   <view class="subtitle">空空如也？扫码录入吧！</view>
   <footer></footer>
 </view>
 <view class="books_list_wrpa" wx:else>
+  <van-search bindtap="toSreachPage" class="search_bar" background="#f1f1f1" placeholder="请输入搜索内容" shape="round" disabled />
   <view class="books_list">
+    <van-loading wx:if="{{loading && books.length === 0}}" class="loading" color="#1989fa" />
     <view class="books_list_item" wx:for="{{books}}" wx:key="index">
-      <image lazy-load class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" bindtap="showDetail" data-item="{{item}}" />
+      <image lazy-load class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" bindtap="toDetailPage" data-item="{{item}}" />
+    </view>
+    <view class="loadmore">
+      <van-loading wx:if="{{loadmore}}" size="24px" color="#1989fa" vertical>加载中...</van-loading>
+      <view wx:if="{{total === books.length && books.length !== 0}}" class="loaddone">无了~</view>
     </view>
   </view>
   <footer></footer>
 </view>
-
-<van-dialog use-slot show="{{ dialogVisible }}" bind:close="onClose" showConfirmButton="{{false}}">
-  <view class="dialog_wrap">
-    <view class="book_detail">
-      <!-- <view class="title">书籍详情</view> -->
-      <view class="content">
-        <image class="photo" mode="scaleToFill" src="{{bookDetail.photoUrl}}" />
-        <view>书名：<text class="text">{{bookDetail.name}}</text>
-        </view>
-        <view>作者：<text class="text">{{bookDetail.author}}</text>
-        </view>
-        <view wx:if="{{bookDetail.translator}}">译者：<text class="text">{{bookDetail.translator}}</text>
-        </view>
-        <view>出版社：<text class="text">{{bookDetail.publishing}}</text>
-        </view>
-        <view>出版时间：<text class="text">{{bookDetail.published}}</text>
-        </view>
-        <view>ISBN：<text class="text">{{bookDetail.id}}</text>
-        </view>
-        <view>收藏时间：<text class="text">{{bookDetail.collectionTime || '-'}}</text>
-        </view>
-      </view>
-    </view>
-    <van-button type="primary" block bindtap="onClose">确定</van-button>
-  </view>
-</van-dialog>

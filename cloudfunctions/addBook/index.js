@@ -4,10 +4,9 @@ cloud.init({
 })
 const db = cloud.database()
 exports.main = async (event, context) => {
-  const list = event.list
   try {
     return await db.collection('books').add({
-      data: list
+      data: event
     })
   } catch (e) {
     console.error(e)

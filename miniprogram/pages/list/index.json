@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "footer": "../../components/footer"
+    "footer": "../../components/footer",
+    "van-search": "@vant/weapp/search/index"
   },
   "backgroundColor": "#fff",
   "enablePullDownRefresh": true,

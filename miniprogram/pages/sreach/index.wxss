@@ -1,0 +1,59 @@
+.top_bar {
+  position: fixed;
+  width: 100%;
+  padding-bottom: 30rpx;
+  background-color: #fff;
+  box-shadow: 0 4px 8px #d1d1d1;
+}
+
+.books {
+  padding: 230rpx 30rpx 20rpx;
+}
+
+
+.books_item {
+  display: flex;
+  margin-bottom: 40rpx;
+}
+
+.books_photo {
+  width: 130rpx;
+  height: 195rpx;
+  border-radius: 6rpx;
+}
+
+.books_content {
+  flex: 1;
+  margin-left: 20rpx;
+}
+
+.books_content_name {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.books_content_name_other {
+  font-size: 24rpx;
+  color: #333;
+}
+
+.loading {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loadmore {
+  display: flex;
+  justify-content: center;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.loaddone {
+  color: #999;
+  font-size: 24rpx;
+  text-align: center;
+}

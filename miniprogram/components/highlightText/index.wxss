@@ -1,0 +1,4 @@
+/* components/highLightText/index.wxss */
+.highlight {
+  color: #1989fa;
+}

@@ -1,0 +1,39 @@
+<view class="container">
+  <view class="top_bar">
+    <van-search class="search_bar" background="#fff" placeholder="请输入搜索内容" shape="round" bind:search="onSearch" bind:change="onSreachChange" />
+    <van-tabs id="tabs" active="{{ active }}" color="#1989fa" bind:change="onTabChange" type="card">
+      <van-tab title="搜书名"></van-tab>
+      <van-tab title="搜作者"></van-tab>
+    </van-tabs>
+  </view>
+
+  <view class="books">
+    <van-loading wx:if="{{loading}}" class="loading" color="#1989fa" />
+    <view class="books_item" wx:for="{{books}}" wx:key="_id">
+      <image class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" />
+      <view class="books_content">
+        <view class="books_content_name">
+          <highlight-text class="result-item" text='{{item.name}}' words="{{key}}" />
+        </view>
+        <view class="books_content_name_other">
+          作者：
+          <highlight-text class="result-item" text='{{item.author}}' words="{{key}}" />
+        </view>
+        <view wx:if="{{item.translator}}" class="books_content_name_other">
+          译者：{{item.translator}}
+        </view>
+        <view class="books_content_name_other">
+          出版社：{{item.publishing}}
+        </view>
+        <view class="books_content_name_other">
+          ISBN：{{item.id}}
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="loadmore">
+    <van-loading wx:if="{{loadmore}}" size="24px" color="#1989fa" vertical>加载中...</van-loading>
+    <view wx:if="{{total === books.length && books.length !== 0}}" class="loaddone">无了~</view>
+  </view>
+</view>
+<van-empty wx:if="{{empty}}" image="search" description="你还没得这本书~" />

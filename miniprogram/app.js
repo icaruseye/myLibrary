@@ -42,7 +42,7 @@ App({
       } else { // 如果文件中 envlist 不存在，提示要配置环境
         this.cloud = () => {
           wx.showModal({
-            content: '当前小程序没有配置云开发环境，请在 envList.js 中配置你的云开发环境', 
+            content: '当前小程序没有配置云开发环境，请在 envList.js 中配置你的云开发环境',
             showCancel: false
           })
           throw new Error('当前小程序没有配置云开发环境，请在 envList.js 中配置你的云开发环境')
@@ -58,25 +58,31 @@ App({
 
   // 获取用户唯一标识，兼容不同环境模式
   async getOpenId() {
-    const {
-      result: {
-        openid,
-        fromopenid
-      }
-    } = await (await this.cloud()).callFunction({
-      name: 'getOpenId'
-    }).catch(e => {
-      let flag = e.toString()
-      flag = flag.indexOf('FunctionName') == -1 ? flag : '请在cloudfunctions文件夹中getOpenId上右键，创建部署云端安装依赖，然后再次体验'
-      wx.hideLoading()
-      wx.showModal({
-        content: flag, // 此提示可以在正式时改为 "网络服务异常，请确认网络重新尝试！"
-        showCancel: false
+    if (this.globalData.openid) {
+      return new Promise((resolve, reject) => {
+        resolve(this.globalData.openid)
       })
-      throw new Error(flag)
-    })
-    this.globalData.openid = openid
-    if (openid !== "") return openid
-    return fromopenid
+    } else {
+      const {
+        result: {
+          openid,
+          fromopenid
+        }
+      } = await (await this.cloud()).callFunction({
+        name: 'getOpenId'
+      }).catch(e => {
+        let flag = e.toString()
+        flag = flag.indexOf('FunctionName') == -1 ? flag : '请在cloudfunctions文件夹中getOpenId上右键，创建部署云端安装依赖，然后再次体验'
+        wx.hideLoading()
+        wx.showModal({
+          content: flag, // 此提示可以在正式时改为 "网络服务异常，请确认网络重新尝试！"
+          showCancel: false
+        })
+        throw new Error(flag)
+      })
+      this.globalData.openid = openid
+      if (openid !== "") return openid
+      return fromopenid
+    }
   }
 })

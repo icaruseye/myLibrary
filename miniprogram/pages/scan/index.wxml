@@ -1,9 +1,6 @@
 <view class="container">
   <camera class="camera" mode="scanCode" binderror="error" bindscancode='takeCode' flash="off"></camera>
-  <view class="collect_btn">
-    <van-button type="info" size="small" bindtap="addBooks">一键收藏（{{books.length}}）</van-button>
-  </view>
-  <scroll-view scroll-y="true" style="height: calc(100vh - 500rpx);">
+  <scroll-view scroll-y="true" style="height: calc(100vh - 670rpx); margin-top: 30rpx;">
     <view class="books" wx:for="{{books}}" wx:key="index">
       <view class="books_item">
         <image class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" />
@@ -27,4 +24,7 @@
       </view>
     </view>
   </scroll-view>
+  <view class="collect_btn">
+    <van-button type="default" bindtap="back" size="large" block>返回书架 (已录入{{books.length}})</van-button>
+  </view>
 </view>
