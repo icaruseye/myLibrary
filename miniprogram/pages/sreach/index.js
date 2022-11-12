@@ -34,16 +34,8 @@ Page({
     if (!key.length) return
     const db = await getApp().database()
     const collection = getApp().globalData.collection
-    const _ = db.command
-    const query = this.data.active === 0 ? {
-      name: db.RegExp({
-        regexp: '.*' + key,
-      })
-    } : {
-      author: db.RegExp({
-        regexp: '.*' + key,
-      })
-    }
+    const query = await this.setQueryReg()
+    console.log(query);
     return getApp().getOpenId().then(async openid => {
       this.setData({
         loading: true
@@ -71,19 +63,9 @@ Page({
   },
 
   async queryTotal() {
-    const key = this.data.key
     const db = await getApp().database()
-    const _ = db.command
     const collection = getApp().globalData.collection
-    const query = this.data.active === 0 ? {
-      name: db.RegExp({
-        regexp: '.*' + key,
-      })
-    } : {
-      author: db.RegExp({
-        regexp: '.*' + key,
-      })
-    }
+    const query = await this.setQueryReg()
     const countResult = await db.collection(collection).where(query).count()
     this.setData({
       total: countResult.total,
@@ -92,6 +74,32 @@ Page({
     wx.setNavigationBarTitle({
       title: countResult.total > 0 ? `嚯~ 搜到${countResult.total}本` : `哦嚯没得~`,
     })
+  },
+
+  async setQueryReg() {
+    const key = this.data.key
+    const db = await getApp().database()
+    const queryReg = {
+      0: {
+        name: db.RegExp({
+          regexp: '.*' + key,
+          options: "i"
+        })
+      },
+      1: {
+        name: db.RegExp({
+          regexp: '.*' + key,
+          options: "i"
+        })
+      },
+      2: {
+        publishing: db.RegExp({
+          regexp: '.*' + key,
+          options: "i"
+        })
+      },
+    }
+    return queryReg[this.data.active]
   },
 
   onSreachChange (e) {

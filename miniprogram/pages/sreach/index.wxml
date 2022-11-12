@@ -2,8 +2,9 @@
   <view class="top_bar">
     <van-search class="search_bar" background="#fff" placeholder="请输入搜索内容" shape="round" bind:search="onSearch" bind:change="onSreachChange" />
     <van-tabs id="tabs" active="{{ active }}" color="#1989fa" bind:change="onTabChange" type="card">
-      <van-tab title="搜书名"></van-tab>
-      <van-tab title="搜作者"></van-tab>
+      <van-tab title="书名"></van-tab>
+      <van-tab title="作者"></van-tab>
+      <van-tab title="出版社"></van-tab>
     </van-tabs>
   </view>
 
