@@ -34,4 +34,35 @@
       </van-col>
     </van-row>
   </view>
+
+  <!-- 手动输入ISBN -->
+  <van-dialog id="van-dialog" use-slot title="搜书" show="{{ inputDialogVisble }}" showConfirmButton="{{false}}" closeOnClickOverlay="{{true}}">
+    <view style="padding: 40rpx 20rpx;">
+      <input model:value="{{isbn}}" placeholder="请输入书籍ISBN编码"  />
+    </view>
+    <view style="padding: 40rpx" class="books_item" wx:if="{{sreachBook.id}}">
+      <image class="books_photo" src="{{sreachBook.photoUrl}}" mode="scaleToFill" />
+      <view class="books_content">
+        <view class="books_content_name">
+          {{sreachBook.name}}
+        </view>
+        <view class="books_content_name_other">
+          作者：{{sreachBook.author}}
+        </view>
+        <view wx:if="{{sreachBook.translator}}" class="books_content_name_other">
+          译者：{{sreachBook.translator}}
+        </view>
+        <view class="books_content_name_other">
+          出版社：{{sreachBook.publishing}}
+        </view>
+        <view class="books_content_name_other">
+          ISBN：{{sreachBook.id}}
+        </view>
+      </view>
+    </view>
+    <view style="padding: 40rpx">
+      <van-button wx:if="{{!sreachBook.id}}" type="info" block round bindtap="onInputConfirm">搜索</van-button>
+      <van-button wx:else type="info" block round bindtap="addSreachBook">加入藏书</van-button>
+    </view>
+  </van-dialog>
 </view>

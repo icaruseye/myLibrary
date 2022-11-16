@@ -1,19 +1,22 @@
-// pages/scan/index.js
 import {
   formatDate
 } from '../../util.js'
 const apiKey = '14073.8b6928465dbf02b61e4c862b321357c4.b26772be2b60b24935bcfeb477449bf7'
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    inputDialogVisble: false,
     scanFunctionIsUseAble: true,
     result: '',
     books: [],
     codeList: [],
-    loading: false
+    loading: false,
+    sreachBook: {},
+    isbn: ''
   },
 
   /**
@@ -47,32 +50,19 @@ Page({
         scanFunctionIsUseAble: false,
       })
       try {
-        const db = await getApp().database()
-        const openid = getApp().globalData.openid
-        const isExist = await db.collection(getApp().globalData.collection).where({
-          _openid: openid,
-          id: Number(code)
-        }).get().then(res => res.data)
-        if (isExist.length) {
-          wx.showToast({
-            title: '已收藏此书',
-            duration: 1000,
-            icon: 'none'
-          })
-        } else {
-          const bookInfo = await this.getBookInfo(e.detail.result).then(res => res.data)
-          bookInfo.collectionTime = formatDate(new Date(), 'yyyy-MM-dd')
-          bookInfo.createTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+        const isExist = await this.isExistBook(code)
+        if (!isExist) {
+          const bookInfo = await this.getBookInfo(code)
           await this.addBooks(bookInfo)
-          this.setData({
-            codeList: this.data.codeList.concat(code),
-            books: [bookInfo, ...this.data.books]
-          })
           setTimeout(_ => {
             this.setData({
               scanFunctionIsUseAble: true,
             })
           }, 1000 * 1)
+        } else {
+          this.setData({
+            scanFunctionIsUseAble: true,
+          })
         }
       } catch (error) {
         wx.showToast({
@@ -100,7 +90,9 @@ Page({
         url: `https://api.jike.xyz/situ/book/isbn/${ISBN}?apikey=${apiKey}`,
         success: (res) => {
           if (res.data.data) {
-            resolve(res.data)
+            res.data.data.collectionTime = formatDate(new Date(), 'yyyy-MM-dd')
+            res.data.data.createTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+            resolve(res.data.data)
           } else {
             reject(res)
           }
@@ -115,6 +107,7 @@ Page({
     })
   },
 
+  // 添加到数据库
   async addBooks(book) {
     wx.showLoading({
       title: '录入中',
@@ -129,6 +122,10 @@ Page({
       },
       // 成功回调
     }).then((res) => {
+      this.setData({
+        codeList: this.data.codeList.concat(book.id),
+        books: [book, ...this.data.books]
+      })
       wx.setStorageSync('booksChange', true)
     }).catch((e) => {
       wx.hideLoading()
@@ -144,57 +141,62 @@ Page({
     })
   },
 
+  // 验证是否已存在于书架
+  async isExistBook(code) {
+    const db = await getApp().database()
+    const isExist = await db.collection(getApp().globalData.collection).where({
+      id: Number(code)
+    }).get().then(res => res.data)
+    if (isExist.length) {
+      wx.showToast({
+        title: '已收藏此书',
+        duration: 1000,
+        icon: 'none'
+      })
+      return true
+    }
+    return false
+  },
+
+  // 添加搜索的书籍
+  async addSreachBook() {
+    const book = this.data.sreachBook
+    await this.addBooks(book)
+    this.onInputClose()
+  },
+
   back() {
     wx.navigateBack()
   },
 
-  // async addBooks() {
-  //   if (this.data.books.length === 0 || this.data.loading) return false
-  //   wx.showLoading({
-  //     title: '录入中',
-  //   })
-  //   this.setData({
-  //     loading: true
-  //   })
-  //   wx.cloud.callFunction({
-  //     // 需调用的云函数名
-  //     name: 'addBook',
-  //     // 传给云函数的参数
-  //     data: {
-  //       list: this.data.books.map(i => {
-  //         return {
-  //           ...i,
-  //           _openid: getApp().globalData.openid
-  //         }
-  //       })
-  //     },
-  //     // 成功回调
-  //   }).then((res) => {
-  //     this.setData({
-  //       books: [],
-  //       loading: false
-  //     })
-  //     wx.showToast({
-  //       title: '添加成功',
-  //       complete() {
-  //         wx.navigateBack()
-  //         wx.setStorageSync('addBooks', true)
-  //       }
-  //     })
-  //   }).catch((e) => {
-  //     wx.hideLoading()
-  //     wx.showToast({
-  //       title: '添加失败!',
-  //       icon: 'error'
-  //     })
-  //     this.setData({
-  //       loading: false
-  //     })
-  //   }).finally(_ => {
-  //     wx.hideLoading()
-  //     this.setData({
-  //       loading: false
-  //     })
-  //   })
-  // },
+  showInput() {
+    this.setData({
+      inputDialogVisble: true
+    })
+  },
+
+  onInputClose() {
+    this.setData({
+      inputDialogVisble: false
+    })
+  },
+
+  async onInputConfirm() {
+    const isbn = this.data.isbn.trim()
+    if (/^(978\d{10}|\d{10})$/.test(isbn)) {
+      const isExist = await this.isExistBook(isbn)
+      if (!isExist) {
+        this.getBookInfo(isbn).then(res => {
+          this.setData({
+            sreachBook: res
+          })
+        })
+      }
+    } else {
+      wx.showToast({
+        title: 'ISBN不正确',
+        icon: 'none'
+      })
+    }
+  },
 })
