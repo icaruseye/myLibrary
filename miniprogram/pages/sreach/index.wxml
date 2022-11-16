@@ -1,6 +1,6 @@
 <view class="container">
   <view class="top_bar">
-    <van-search class="search_bar" background="#fff" placeholder="请输入搜索内容" shape="round" bind:search="onSearch" bind:change="onSreachChange" />
+    <van-search class="search_bar" focus="{{true}}" background="#fff" placeholder="请输入搜索内容" shape="round" bind:search="onSearch" bind:change="onSreachChange" />
     <van-tabs id="tabs" active="{{ active }}" color="#1989fa" bind:change="onTabChange" type="card">
       <van-tab title="书名"></van-tab>
       <van-tab title="作者"></van-tab>
@@ -10,21 +10,25 @@
 
   <view class="books">
     <van-loading wx:if="{{loading}}" class="loading" color="#1989fa" />
-    <view class="books_item" wx:for="{{books}}" wx:key="_id">
+    <view class="books_item" wx:for="{{books}}" wx:key="_id"  bindtap="toDetailPage" data-item="{{item}}">
       <image class="books_photo" src="{{item.photoUrl}}" mode="scaleToFill" />
       <view class="books_content">
         <view class="books_content_name">
-          <highlight-text class="result-item" text='{{item.name}}' words="{{key}}" />
+          <highlight-text wx-if="{{active === 0}}" class="result-item" text='{{item.name}}' words="{{key}}" />
+          <text wx:else>{{item.name}}</text>
         </view>
         <view class="books_content_name_other">
           作者：
-          <highlight-text class="result-item" text='{{item.author}}' words="{{key}}" />
+          <highlight-text wx-if="{{active === 1}}" class="result-item" text='{{item.author}}' words="{{key}}" />
+          <text wx:else>{{item.author}}</text>
         </view>
         <view wx:if="{{item.translator}}" class="books_content_name_other">
           译者：{{item.translator}}
         </view>
         <view class="books_content_name_other">
-          出版社：{{item.publishing}}
+          出版社：
+          <highlight-text wx-if="{{active === 2}}" class="result-item" text='{{item.publishing}}' words="{{key}}" />
+          <text wx:else>{{item.publishing}}</text>
         </view>
         <view class="books_content_name_other">
           ISBN：{{item.id}}

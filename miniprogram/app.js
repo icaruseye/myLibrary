@@ -1,12 +1,12 @@
 App({
   async onLaunch() {
     this.initcloud()
-
     this.globalData = {
       // 用于存储待办记录的集合名称
       collection: 'books',
       openid: ''
     }
+    this.getOpenId()
   },
 
   flag: false,
@@ -81,6 +81,7 @@ App({
         throw new Error(flag)
       })
       this.globalData.openid = openid
+      console.log(openid);
       if (openid !== "") return openid
       return fromopenid
     }

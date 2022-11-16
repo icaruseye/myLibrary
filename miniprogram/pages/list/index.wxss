@@ -51,7 +51,8 @@ page {
   width: 170rpx;
   height: 255rpx;
   border-radius: 6rpx;
-  box-shadow: 2px 4px 8px #ccc;
+  box-shadow: 2px 6px 10px #bbb;
+  border-bottom: 1rpx solid #ccc;
 }
 
 .loading {

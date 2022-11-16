@@ -9,7 +9,7 @@ Page({
     loading: false,
     loadmore: false
   },
-  onLoad() {
+  async onLoad() {
     this.getTotal()
     this.getList()
   },
@@ -18,6 +18,7 @@ Page({
       this.setData({
         books: []
       })
+      this.getTotal()
       this.getList()
       wx.setStorageSync('booksChange', false)
     }
@@ -38,39 +39,29 @@ Page({
 
   async getList(length = 0) {
     // 通过云函数调用获取用户 _openId
-    return getApp().getOpenId().then(async openid => {
-      const db = await getApp().database()
-      const collection = getApp().globalData.collection
-      this.setData({
-        loading: true
-      })
-      // 根据 _openId 数据，查询并展示藏书列表
-      return db.collection(collection).where({
-        _openid: openid
-      }).orderBy('createTime', 'desc').skip(length).limit(15).get().then(res => {
-        const {
-          data
-        } = res
-        // 存储查询到的数据
-        this.setData({
-          books: [...this.data.books, ...data]
-        })
-        this.setData({
-          loading: false
-        })
-      }).catch(_ => {
-        this.setData({
-          loading: false
-        })
-      })
+    // return getApp().getOpenId().then(async openid => {
+    // })
+    const db = await getApp().database()
+    const collection = getApp().globalData.collection
+    this.setData({
+      loading: true
     })
-  },
-
-  toDetailPage(e) {
-    const todoIndex = e.currentTarget.dataset.index
-    const todo = this.data.pending[todoIndex]
-    wx.navigateTo({
-      url: '../detail/index?id=' + todo._id,
+    // 根据 _openId 数据，查询并展示藏书列表
+    return db.collection(collection).orderBy('createTime', 'desc').skip(length).limit(15).get().then(res => {
+      const {
+        data
+      } = res
+      // 存储查询到的数据
+      this.setData({
+        books: [...this.data.books, ...data]
+      })
+      this.setData({
+        loading: false
+      })
+    }).catch(_ => {
+      this.setData({
+        loading: false
+      })
     })
   },
 

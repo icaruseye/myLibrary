@@ -35,29 +35,25 @@ Page({
     const db = await getApp().database()
     const collection = getApp().globalData.collection
     const query = await this.setQueryReg()
-    console.log(query);
-    return getApp().getOpenId().then(async openid => {
+    this.setData({
+      loading: true
+    })
+    return db.collection(collection).where({
+      ...query
+    }).skip(length).limit(limit).get().then(res => {
+      const {
+        data
+      } = res
+      // 存储查询到的数据
       this.setData({
-        loading: true
+        books: [...this.data.books, ...data],
       })
-      return db.collection(collection).where({
-        _openid: openid,
-        ...query
-      }).skip(length).limit(limit).get().then(res => {
-        const {
-          data
-        } = res
-        // 存储查询到的数据
-        this.setData({
-          books: [...this.data.books, ...data],
-        })
-        this.setData({
-          loading: false
-        })
-      }).catch(e => {
-        this.setData({
-          loading: false
-        })
+      this.setData({
+        loading: false
+      })
+    }).catch(e => {
+      this.setData({
+        loading: false
       })
     })
   },
@@ -87,7 +83,7 @@ Page({
         })
       },
       1: {
-        name: db.RegExp({
+        author: db.RegExp({
           regexp: '.*' + key,
           options: "i"
         })
@@ -102,7 +98,16 @@ Page({
     return queryReg[this.data.active]
   },
 
-  onSreachChange (e) {
+  toDetailPage(e) {
+    wx.navigateTo({
+      url: '/pages/info/index',
+      success: function (res) {
+        res.eventChannel.emit('bookInfo', e.currentTarget.dataset.item)
+      }
+    })
+  },
+
+  onSreachChange(e) {
     this.setData({
       key: e.detail,
     })

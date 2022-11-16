@@ -68,12 +68,12 @@ Page({
             codeList: this.data.codeList.concat(code),
             books: [bookInfo, ...this.data.books]
           })
+          setTimeout(_ => {
+            this.setData({
+              scanFunctionIsUseAble: true,
+            })
+          }, 1000 * 1)
         }
-        setTimeout(_ => {
-          this.setData({
-            scanFunctionIsUseAble: true,
-          })
-        }, 1000 * 1)
       } catch (error) {
         wx.showToast({
           title: '查询失败',

@@ -4,8 +4,8 @@ page {
 
 .container .photo {
   margin: 50rpx auto 80rpx;
-  width: 250rpx;
-  height: 400rpx;
+  width: 240rpx;
+  height: 360rpx;
   display: block;
   box-shadow: 2px 4px 8px #ababab;
   border-radius: 6rpx;

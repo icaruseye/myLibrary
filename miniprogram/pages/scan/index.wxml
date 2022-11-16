@@ -25,6 +25,13 @@
     </view>
   </scroll-view>
   <view class="collect_btn">
-    <van-button type="default" bindtap="back" size="large" block>返回书架 (已录入{{books.length}})</van-button>
+    <van-row gutter="20">
+      <van-col span="10">
+        <van-button type="info" bindtap="showInput" size="large" block>手动输入ISBN</van-button>
+      </van-col>
+      <van-col span="14">
+        <van-button type="default" bindtap="back" size="large" block>返回书架 (已录入{{books.length}})</van-button>
+      </van-col>
+    </van-row>
   </view>
 </view>

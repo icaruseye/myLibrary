@@ -20,6 +20,7 @@
   width: 130rpx;
   height: 195rpx;
   border-radius: 6rpx;
+  border: 1rpx solid #f1f1f1;
 }
 
 .books_content {
@@ -31,6 +32,7 @@
   font-size: 30rpx;
   color: #333;
   font-weight: bold;
+  margin-bottom: 10rpx;
 }
 
 .books_content_name_other {
